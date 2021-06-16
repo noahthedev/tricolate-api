@@ -6,5 +6,5 @@ CREATE TABLE recipes (
   grind TEXT,
   water INTEGER NOT NULL,
   method TEXT NOT NULL,
-  link URL
+  link TEXT
 );
