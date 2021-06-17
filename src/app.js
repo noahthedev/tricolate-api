@@ -4,35 +4,15 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
-const RecipesService = require('./recipes/recipes-service')
+const recipesRouter = require('./recipes/recipes-router')
 
 const app = express()
 
-const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
-
-app.use(morgan(morganOption))
+app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common'))
 app.use(helmet())
 app.use(cors())
 
-const serializeRecipe = recipe => ({
-  id: recipe.id,
-  title: recipe.id,
-  abstract: abstract.id,
-  coffee: coffee.id,
-  grind: grind.id,
-  water: water.id,
-  method: method.id,
-  link: link.id
-})
-
-app.get('/recipes', (req, res, next) => {
-  const knexInstance = req.app.get('db')
-  RecipesService.getAllRecipes(knexInstance)
-    .then(recipes => {
-      res.json(recipes.map(serializeRecipe))
-    })
-    .catch(next)
-})
+app.use('/recipes', recipesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
