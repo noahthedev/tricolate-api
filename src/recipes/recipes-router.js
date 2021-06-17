@@ -26,5 +26,21 @@ recipesRouter
       })
       .catch(next)
   })
+  .post(jsonParser, (req, res, next) => {
+    const { title, abstract, coffee, grind, water, method, link } = req.body
+
+    const newRecipe = { title, abstract, coffee, grind, water, method, link }
+
+    RecipesService.insertRecipe(
+      req.app.get('db'), newRecipe
+    )
+      .then(recipe => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `${recipe.id}`))
+          .json(serializeRecipe(recipe))
+      })
+      .catch(next)
+  })
 
 module.exports = recipesRouter
