@@ -4,6 +4,13 @@ const RecipesService = {
       .select('*')
       .from('recipes')
   },
+  getById(knex, id) {
+    return knex
+      .from('recipes')
+      .select('*')
+      .where('id', id)
+      .first()
+  },
   insertRecipe(knex, newRecipe) {
     return knex
       .insert(newRecipe)
