@@ -73,6 +73,37 @@ describe('Recipes API:', () => {
     });
   });
 
+  describe('GET /recipes/:id', () => {
+
+    beforeEach('insert some recipes', () => {
+      return db('recipes').insert(recipes);
+    })
+
+    it('should return correct recipe when provided an id', () => {
+      let rep;
+      return db('recipes')
+      .first()
+      .then(_rep => {
+        rep = _rep
+        return supertest(app)
+          .get(`/recipes/${rep.id}`)
+          .expect(200);
+      })
+      .then(res => {
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.include.keys('id', 'title', 'abstract', 'coffee', 'grind', 'water', 'method');
+        expect(res.body.id).to.equal(rep.id);
+        expect(res.body.title).to.equal(rep.title);
+      });
+    });
+
+    it('should response with a 404 when given an invalid id', () => {
+      return supertest(app)
+        .get('/recipes/123456789')
+        .expect(404);
+    });
+  });
+
   describe('POST /recipes', () => {
 
     it('should create and return a new recipe when provided valid data', () => {
