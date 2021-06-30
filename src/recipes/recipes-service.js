@@ -19,6 +19,16 @@ const RecipesService = {
       .then(rows => {
         return rows[0]
       })
+  },
+  deleteRecipe(knex, id) {
+    return knex('recipes')
+      .where({ id })
+      .delete()
+  },
+  updateRecipe(knex, id, recipeMods) {
+    return knex('recipes')
+      .where({ id })
+      .update(recipeMods)
   }
 }
 

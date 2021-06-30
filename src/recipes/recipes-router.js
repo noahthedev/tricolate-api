@@ -66,5 +66,14 @@ recipesRouter
     .get((req, res, next) => {
       res.json(serializeRecipe(res.recipe))
     })
+    .delete((req, res, next) => {
+      const knexInstance = req.app.get('db')
+      RecipesService.deleteRecipe(
+        knexInstance,
+        req.params.id
+      )
+      .then(res.status(204).end())
+      .catch(next)
+    })
 
 module.exports = recipesRouter
