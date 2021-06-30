@@ -127,6 +127,29 @@ describe('Recipes API:', () => {
           expect(res.headers.location).to.equal(`/recipes/${res.body.id}`)
         })
     })
-  })
-})
+  });
+
+  describe('DELETE /recipes/:id', () => {
+
+    beforeEach('insert some recipes', () => {
+      return db('recipes').insert(recipes);
+    })
+
+    it('should delete a recipe by id', () => {
+      return db('recipes')
+        .first()
+        .then(rep => {
+          return supertest(app)
+            .delete(`/recipes/${rep.id}`)
+            .expect(204);
+        })
+    });
+
+    it('should respond with a 404 for an invalid id', () => {
+      return supertest(app)
+        .delete('/recipes/123456789')
+        .expect(404);
+    });
+  });
+});
  
