@@ -11,4 +11,7 @@ This project was created using
 * Express
 * PostgreSQL
 
-##
+## API Endpoints
+
+- GET & POST - /recipes
+- PATCH & DELETE - /recipes/:id
